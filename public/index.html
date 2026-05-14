@@ -2,55 +2,135 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>SANTAMAR | COMING SOON</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Eclipse Ibiza Vibes - Coming Soon. Algo épico se acerca.">
+  
+  <title>ECLIPSE IBIZA VIBES | Coming Soon</title>
+  
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;400;600;900&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="coming-soon.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@200;300;400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ff6600' opacity='0.8'/%3E%3C/svg%3E">
+  
+  <!-- Estilos -->
+  <link rel="stylesheet" href="coming-soon.css">
+  
+  <style>
+    /* Load state - ocultar contenido por defecto */
+    body.js-loading .main-content * {
+      visibility: hidden;
+    }
+  </style>
 </head>
-<body>
-  <div class="background-image"></div>
-  <div class="overlay"></div>
+<body class="js-loading">
+  <!-- Custom Cursor Glow -->
   <div class="cursor-glow"></div>
   
-
-  
-  <div class="secret-message" id="secretMessage">
-    DONDE EL VERANO SE CONVIERTE EN HISTORIA
+  <!-- Scene Wrapper con Eclipse -->
+  <div class="scene-wrapper">
+    <div class="eclipse-scene" id="eclipseScene">
+      <!-- Fondo de estrellas -->
+      <div class="stars" id="stars"></div>
+      
+      <!-- Sol (Sun) -->
+      <div class="sun" id="sun">
+        <div class="sun-core"></div>
+        <div class="sun-glow"></div>
+      </div>
+      
+      <!-- Rayos de Corona -->
+      <div class="corona-rays" id="coronaRays">
+        <div class="ray" style="--i: 0;"></div>
+        <div class="ray" style="--i: 1;"></div>
+        <div class="ray" style="--i: 2;"></div>
+        <div class="ray" style="--i: 3;"></div>
+        <div class="ray" style="--i: 4;"></div>
+        <div class="ray" style="--i: 5;"></div>
+      </div>
+      
+      <!-- Luna (Moon) - se mueve sobre el sol -->
+      <div class="moon" id="moon">
+        <div class="moon-surface"></div>
+      </div>
+      
+      <!-- Partículas cósmicas -->
+      <div class="particles" id="particles"></div>
+      
+      <!-- Niebla y atmósfera -->
+      <div class="fog"></div>
+    </div>
   </div>
   
-  <div class="content">
-    <div class="small-text">LA CUENTA ATRAS HA COMENZADO</div>
-    <h1 class="main-title">COMING SOON</h1>
-    <p class="subtitle">El verano no empieza… hasta que Santamar despierta</p>
+  <!-- Screen Overlay para flashes -->
+  <div class="screen-overlay" id="screenOverlay"></div>
+  
+  <!-- Sound Toggle Button -->
+  <button class="sound-toggle" id="soundToggle" title="Activar/Desactivar sonido ambiental">
+    <svg class="sound-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.3-2.5-4.04v8.08c1.48-.74 2.5-2.27 2.5-4.04zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+    </svg>
+    <svg class="sound-muted hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+      <path fill="currentColor" d="M16.6915026,12.4744748 L21.3818531,7.72348211 C21.6214944,7.48131045 21.6214944,7.0939341 21.3818531,6.85176234 L20.8847722,6.35460562 C20.6451245,6.11243469 20.2592448,6.11243469 20.0195975,6.35460562 L15.3292469,11.1055983 L10.6388964,6.35460562 C10.3992551,6.11243469 10.0133754,6.11243469 9.77372806,6.35460562 L9.27664715,6.85176234 C9.03700638,7.0939341 9.03700638,7.48131045 9.27664715,7.72348211 L13.9670477,12.4744748 L9.27664715,17.2254675 C9.03700638,17.4676391 9.03700638,17.8550155 9.27664715,18.0971872 L9.77372806,18.5943439 C10.0133754,18.8365156 10.3992551,18.8365156 10.6388964,18.5943439 L15.3292469,13.8433511 L20.0195975,18.5943439 C20.2592448,18.8365156 20.6451245,18.8365156 20.8847722,18.5943439 L21.3818531,18.0971872 C21.6214944,17.8550155 21.6214944,17.4676391 21.3818531,17.2254675 L16.6915026,12.4744748 Z M3,6 L0,6 C-0.552284749,6 -1,6.44771525 -1,7 L-1,17 C-1,17.5522847 -0.552284749,18 0,18 L3,18 L8,23 L8,1 L3,6 Z"/>
+    </svg>
+  </button>
+  
+  <!-- Secret Message (aparece ocasionalmente) -->
+  <div class="secret-message" id="secretMessage">
+    ✦ SOLO AQUELLOS QUE ESPEREN VERÁN EL ECLIPSE ✦
+  </div>
+  
+  <!-- Main Content -->
+  <div class="main-content">
+    <!-- Top Label -->
+    <div class="top-label">🌘 Algo épico se acerca</div>
     
-    <div class="countdown" id="countdown">
-      <div class="countdown-item">
-        <span class="countdown-number" id="days">00</span>
-        <span class="countdown-label">Días</span>
+    <!-- Main Title -->
+    <h1 class="main-title">COMING SOON</h1>
+    
+    <!-- Subtitle -->
+    <p class="subtitle">
+      Prepárate para la noche que Ibiza recordará.<br>
+      El eclipse traerá la mayor experiencia de tu vida.
+    </p>
+    
+    <!-- Countdown Timer -->
+    <div class="countdown">
+      <div class="count-unit">
+        <span class="count-number" id="days">00</span>
+        <span class="count-label">Días</span>
       </div>
-      <div class="countdown-item">
-        <span class="countdown-number" id="hours">00</span>
-        <span class="countdown-label">Horas</span>
+      <span class="count-separator">:</span>
+      <div class="count-unit">
+        <span class="count-number" id="hours">00</span>
+        <span class="count-label">Horas</span>
       </div>
-      <div class="countdown-item">
-        <span class="countdown-number" id="minutes">00</span>
-        <span class="countdown-label">Minutos</span>
+      <span class="count-separator">:</span>
+      <div class="count-unit">
+        <span class="count-number" id="minutes">00</span>
+        <span class="count-label">Minutos</span>
       </div>
-      <div class="countdown-item">
-        <span class="countdown-number" id="seconds">00</span>
-        <span class="countdown-label">Segundos</span>
+      <span class="count-separator">:</span>
+      <div class="count-unit">
+        <span class="count-number" id="seconds">00</span>
+        <span class="count-label">Segundos</span>
       </div>
     </div>
     
-    <button class="cta-button" id="ctaButton">
-      <span class="btn-text">¿Te atreves?</span>
-      <span class="btn-reveal" id="btnReveal">12 AGOSTO</span>
+    <!-- CTA Button -->
+    <button class="cta-btn" id="ctaButton">
+      <span class="cta-text">Revelar Fecha</span>
+      <span class="cta-reveal">1 DE JULIO 2026</span>
     </button>
   </div>
   
+  <!-- Scripts -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <script src="coming-soon.js"></script>
 </body>
 </html>
