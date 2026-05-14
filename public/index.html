@@ -1,0 +1,71 @@
+<!-- index.html - SANTAMAR COMING SOON -->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>SANTAMAR | COMING SOON</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@300;400;600;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="coming-soon.css"/>
+</head>
+<body>
+  <div class="cursor-glow"></div>
+
+  <div class="sound-control">
+    <button id="soundToggle" class="sound-btn">
+      <span class="sound-icon">🔊</span>
+    </button>
+  </div>
+
+  <div class="secret-message" id="secretMessage">
+    ONLY THOSE WHO WAIT WILL WITNESS THE ECLIPSE
+  </div>
+
+  <div class="scene">
+    <canvas id="eclipseCanvas"></canvas>
+    <div class="light-rays"></div>
+    <div class="particles" id="particles"></div>
+    <div class="fog"></div>
+  </div>
+
+  <div class="content">
+    <div class="small-text">THE DARKNESS IS COMING</div>
+
+    <h1 class="main-title">COMING SOON</h1>
+    <p class="subtitle">WHEN THE SUN DISAPPEARS… THE NIGHT WILL AWAKEN</p>
+
+    <div class="countdown" id="countdown">
+      <div class="countdown-item">
+        <span class="countdown-number" id="days">00</span>
+        <span class="countdown-label">DAYS</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="hours">00</span>
+        <span class="countdown-label">HOURS</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="minutes">00</span>
+        <span class="countdown-label">MINUTES</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="seconds">00</span>
+        <span class="countdown-label">SECONDS</span>
+      </div>
+    </div>
+
+    <button class="cta-button" id="ctaButton">
+      <span class="btn-text">ENTER THE SHADOW</span>
+      <span class="btn-reveal" id="btnReveal">07.2026 — SANTAMAR</span>
+    </button>
+  </div>
+
+  <audio id="ambientSound" loop>
+    <source src="data:audio/wav;base64,UklGRl9vT19XQVZFZm10IBAAAAABAAEARKwAAIhYAQACABAAZGF0YU9vT18=" type="audio/wav">
+  </audio>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="coming-soon.js"></script>
+</body>
+</html>
