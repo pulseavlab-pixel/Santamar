@@ -30,6 +30,7 @@ const dom = {
   soundToggle: document.getElementById('soundToggle'),
   soundIcon: document.querySelector('.sound-icon'),
   soundMuted: document.querySelector('.sound-muted'),
+  bgAudio: document.getElementById('bgAudio'),
   secretMessage: document.getElementById('secretMessage'),
   screenOverlay: document.getElementById('screenOverlay')
 };
@@ -42,65 +43,63 @@ let isMuted = true;
 
 function initAudio() {
   try {
-    // Crear contexto de audio
-    const AudioContext = window.AudioContext || window.webkitAudioContext;
-    const audioCtx = new AudioContext();
-    
-    // Crear un oscilador para el sonido de eclipse
-    const oscillator = audioCtx.createOscillator();
-    const gainNode = audioCtx.createGain();
-    const filter = audioCtx.createBiquadFilter();
-    
-    oscillator.type = 'sine';
-    oscillator.frequency.setValueAtTime(40, audioCtx.currentTime);
-    
-    filter.type = 'lowpass';
-    filter.frequency.setValueAtTime(200, audioCtx.currentTime);
-    filter.Q.setValueAtTime(1, audioCtx.currentTime);
-    
-    gainNode.gain.setValueAtTime(0, audioCtx.currentTime);
-    
-    oscillator.connect(filter);
-    filter.connect(gainNode);
-    gainNode.connect(audioCtx.destination);
-    
-    oscillator.start();
-    
-    ambientAudio = { audioCtx, oscillator, gainNode, filter };
-    
-    // Actualizar UI
-    dom.soundIcon.style.display = 'none';
-    dom.soundMuted.classList.remove('hidden');
-    
+    const audioEl = dom.bgAudio;
+    if (!audioEl) {
+      throw new Error('Audio element no encontrado');
+    }
+
+    audioEl.volume = 0.15;
+    audioEl.muted = true;
+
+    const playPromise = audioEl.play();
+    if (playPromise !== undefined) {
+      playPromise.then(() => {
+        setTimeout(() => {
+          audioEl.muted = false;
+        }, 100);
+        isMuted = false;
+        dom.soundIcon.style.display = 'none';
+        dom.soundMuted.classList.remove('hidden');
+      }).catch(() => {
+        isMuted = true;
+        dom.soundIcon.style.display = 'block';
+        dom.soundMuted.classList.add('hidden');
+
+        const resumePlayback = () => {
+          audioEl.muted = false;
+          audioEl.play().then(() => {
+            isMuted = false;
+            dom.soundIcon.style.display = 'none';
+            dom.soundMuted.classList.remove('hidden');
+            document.body.removeEventListener('click', resumePlayback);
+          }).catch(() => {});
+        };
+
+        document.body.addEventListener('click', resumePlayback, { once: true });
+      });
+    }
+
+    ambientAudio = audioEl;
   } catch (e) {
-    console.warn('Web Audio API no soportada');
+    console.warn('Audio local no soportado', e);
     dom.soundToggle.style.display = 'none';
   }
 }
 
 function toggleSound() {
   if (!ambientAudio) {
-    // Inicializar audio al primer clic
     initAudio();
     return;
   }
-  
+
   isMuted = !isMuted;
-  
-  if (!isMuted && ambientAudio.audioCtx.state === 'suspended') {
-    ambientAudio.audioCtx.resume();
-  }
-  
-  // Añadir transición suave
-  const { gainNode } = ambientAudio;
-  gainNode.gain.cancelScheduledValues(ambientAudio.audioCtx.currentTime);
-  
+
   if (isMuted) {
-    gainNode.gain.linearRampToValueAtTime(0, ambientAudio.audioCtx.currentTime + 1);
+    ambientAudio.volume = 0;
     dom.soundIcon.style.display = 'block';
     dom.soundMuted.classList.add('hidden');
   } else {
-    gainNode.gain.linearRampToValueAtTime(0.15, ambientAudio.audioCtx.currentTime + 1);
+    ambientAudio.volume = 0.15;
     dom.soundIcon.style.display = 'none';
     dom.soundMuted.classList.remove('hidden');
   }
@@ -453,6 +452,9 @@ function init() {
   createParticles();
   animateEclipse();
   initEntranceAnimations();
+  
+  // Intentar iniciar audio en cuanto se carga la web
+  initAudio();
   
   // Actualizar posición inicial del cursor-glow
   gsap.set(dom.cursorGlow, { x: mouse.x, y: mouse.y });
