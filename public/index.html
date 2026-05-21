@@ -1,138 +1,491 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#000000">
-  <meta name="description" content="Eclipse Santamar Vibes - Coming Soon. Algo épico se acerca.">
-  
-  <title>ECLIPSE SANTAMAR VIBES | Coming Soon</title>
-  
-  <!-- Fonts -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#0b0918" />
+  <meta name="description"
+    content="SANTAMARFEST 2027 — 9 días de música, tradición y locura. 12 de Agosto, Santa María del Río, León." />
+
+  <title>SANTAMARFEST 2027 | 9 Días de Música, Tradición y Locura</title>
+
+  <!-- ── Fonts ─-
+       Montserrat : body text (300|400|600|700|900)
+       Orbitron   : headings — techy but warm
+       Bebas Neue : big display caps — iconic for festival arts
+       Permanent Marker : rustic / wheat-bag hand-written feel
+  ── -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Montserrat:wght@200;300;400;600;700;900&family=Bebas+Neue&display=swap" rel="stylesheet">
-  
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Orbitron:wght@400;700;900&family=Bebas+Neue&family=Permanent+Marker&display=swap" rel="stylesheet">
+
   <!-- Favicon -->
-  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ff6600' opacity='0.8'/%3E%3C/svg%3E">
-  
-  <!-- Estilos -->
-  <link rel="stylesheet" href="coming-soon.css">
-  
-  <style>
-    /* Load state - ocultar contenido por defecto */
-    body.js-loading .main-content * {
-      visibility: hidden;
-    }
-  </style>
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ccircle cx='50' cy='50' r='45' fill='%23ff6600' opacity='0.8'/%3E%3C/svg%3E">
+
+  <!-- CSS load order (each file overrides + extends the previous) -->
+  <link rel="stylesheet" href="coming-soon.css" />   <!-- eclipse scene base -->
+  <link rel="stylesheet" href="styles-lineup.css" />  <!-- neon / grid language  -->
+  <link rel="stylesheet" href="home.css" />            <!-- rustic-modern home    -->
 </head>
-<body class="js-loading">
-  <!-- Custom Cursor Glow -->
-  <div class="cursor-glow"></div>
-  
-  <!-- Scene Wrapper con Eclipse -->
-  <div class="scene-wrapper">
+<body class="home-page js-loading">
+
+<!-- ════════════════════════════════════════════════════════════
+     NAVBAR — SANTAMARFEST
+     Fixed glass bar: revealed after hero, hidden on scroll-up
+════════════════════════════════════════════════════════════ -->
+<header class="home-nav" id="homeNav">
+  <div class="home-nav-inner">
+
+    <!-- Logo: Bebas Neue的品牌字 -->
+    <a href="#home" class="home-logo">
+      <span class="logo-santamar">SANTAMAR XXX</span>
+        <span class="logo-sub">Santa María del Río · 2026</span>
+    </a>
+
+    <!-- Desktop nav links -->
+    <nav class="home-nav-links" id="homeNavLinks">
+      <a href="#home"          class="hn-link active">Inicio</a>
+      <a href="#intro"         class="hn-link">El Evento</a>
+      <a href="#lineup-prev"   class="hn-link">Line Up</a>
+      <a href="#programa-prev" class="hn-link">Programa</a>
+      <a href="#socios"        class="hn-link">Hazte Socio</a>
+      <a href="#contacto"      class="hn-link">Contacto</a>
+    </nav>
+
+    <!-- Hamburger button (mobile only) -->
+    <button class="home-nav-toggle" id="navToggle" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- CTA pill — desktop only -->
+    <a href="#socios" class="home-nav-cta" aria-label="Hazte socio — entra al festival">HAZTE SOCIO</a>
+
+  </div>
+</header>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     HERO — eclipse scene + SANTAMARFEST title
+════════════════════════════════════════════════════════════ -->
+<section id="home" class="h-hero">
+
+  <!-- Eclipse background scene (cosmic, from coming-soon.css) -->
+  <div class="scene-wrapper" aria-hidden="true">
     <div class="eclipse-scene" id="eclipseScene">
-      <!-- Fondo de estrellas -->
-      <div class="stars" id="stars"></div>
-      
-      <!-- Sol (Sun) -->
-      <div class="sun" id="sun">
+      <div class="stars"   id="stars"></div>
+      <div class="sun"     id="sun">
         <div class="sun-core"></div>
         <div class="sun-glow"></div>
       </div>
-      
-      <!-- Rayos de Corona -->
       <div class="corona-rays" id="coronaRays">
-        <div class="ray" style="--i: 0;"></div>
-        <div class="ray" style="--i: 1;"></div>
-        <div class="ray" style="--i: 2;"></div>
-        <div class="ray" style="--i: 3;"></div>
-        <div class="ray" style="--i: 4;"></div>
-        <div class="ray" style="--i: 5;"></div>
+        <div class="ray" style="--i:0"></div>
+        <div class="ray" style="--i:1"></div>
+        <div class="ray" style="--i:2"></div>
+        <div class="ray" style="--i:3"></div>
+        <div class="ray" style="--i:4"></div>
+        <div class="ray" style="--i:5"></div>
       </div>
-      
-      <!-- Luna (Moon) - se mueve sobre el sol -->
-      <div class="moon" id="moon">
-        <div class="moon-surface"></div>
-      </div>
-      
-      <!-- Partículas cósmicas -->
+      <div class="moon" id="moon"><div class="moon-surface"></div></div>
       <div class="particles" id="particles"></div>
-      
-      <!-- Niebla y atmósfera -->
-      <div class="fog"></div>
+      <!-- Warm earth-fog wraps the cold eclipse in amber tones -->
+      <div class="h-hero-fog" aria-hidden="true"></div>
     </div>
   </div>
-  
-  <!-- Screen Overlay para flashes -->
-  <div class="screen-overlay" id="screenOverlay"></div>
-  
-  <!-- Sound Toggle Button -->
-  <button class="sound-toggle" id="soundToggle" title="Activar/Desactivar sonido ambiental">
-    <svg class="sound-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.3-2.5-4.04v8.08c1.48-.74 2.5-2.27 2.5-4.04zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-    </svg>
-    <svg class="sound-muted hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-      <path fill="currentColor" d="M16.6915026,12.4744748 L21.3818531,7.72348211 C21.6214944,7.48131045 21.6214944,7.0939341 21.3818531,6.85176234 L20.8847722,6.35460562 C20.6451245,6.11243469 20.2592448,6.11243469 20.0195975,6.35460562 L15.3292469,11.1055983 L10.6388964,6.35460562 C10.3992551,6.11243469 10.0133754,6.11243469 9.77372806,6.35460562 L9.27664715,6.85176234 C9.03700638,7.0939341 9.03700638,7.48131045 9.27664715,7.72348211 L13.9670477,12.4744748 L9.27664715,17.2254675 C9.03700638,17.4676391 9.03700638,17.8550155 9.27664715,18.0971872 L9.77372806,18.5943439 C10.0133754,18.8365156 10.3992551,18.8365156 10.6388964,18.5943439 L15.3292469,13.8433511 L20.0195975,18.5943439 C20.2592448,18.8365156 20.6451245,18.8365156 20.8847722,18.5943439 L21.3818531,18.0971872 C21.6214944,17.8550155 21.6214944,17.4676391 21.3818531,17.2254675 L16.6915026,12.4744748 Z M3,6 L0,6 C-0.552284749,6 -1,6.44771525 -1,7 L-1,17 C-1,17.5522847 -0.552284749,18 0,18 L3,18 L8,23 L8,1 L3,6 Z"/>
-    </svg>
-  </button>
-  <audio id="bgAudio" src="recursos/intro_santamar_ibiza_2026.mpeg" autoplay muted loop playsinline preload="auto"></audio>
-  
-  
-  <!-- Main Content -->
-  <div class="main-content">
-    <!-- Top Label -->
-    <div class="top-label">🌘 Algo épico se acerca</div>
-    
-    <!-- Main Title -->
-    <h1 class="main-title">SANTAMAR</h1>
-    
-    <!-- Subtitle -->
-    <p class="subtitle">
-      Prepárate para la noche que no olvidarás.<br>
-      El eclipse traerá la mayor experiencia de tu vida.
+
+  <!-- Film-grain overlay for that analogue festival texture -->
+  <div class="h-grain-overlay" aria-hidden="true"></div>
+
+  <!-- ── Hero Content ── -->
+  <div class="h-hero-content">
+
+    <!-- Eyebrow: location + date -->
+    <p class="h-eyebrow">
+      ✦ &nbsp;SANTA MARÍA DEL RÍO &nbsp;·&nbsp; LEÓN &nbsp;·&nbsp; 7 al 15 DE AGOSTO 2026 &nbsp;✦
     </p>
-    
-    <!-- Countdown Timer -->
-    <div class="countdown">
-      <div class="count-unit">
-        <span class="count-number" id="days">00</span>
-        <span class="count-label">Días</span>
+
+    <!-- Festival name — Bebas Neue display face -->
+    <h1 class="h-title">SANTAMAR XXX</h1>
+
+    <!-- Tagline — Permanent Marker gives it that hand-painted wheat-bag feel -->
+    <p class="h-subtitle h-tagline-main">
+      THE 30TH ANNIVERSARY,&nbsp;tradición y&nbsp;locura
+    </p>
+
+    <!-- Countdown -->
+    <div class="h-countdown" id="hCountdown" aria-label="Cuenta atrás hasta el festival">
+      <div class="h-count-block">
+        <span class="h-count-num" id="hDays">30</span>
+        <span class="h-count-lbl">Días</span>
       </div>
-      <span class="count-separator">:</span>
-      <div class="count-unit">
-        <span class="count-number" id="hours">00</span>
-        <span class="count-label">Horas</span>
+      <span class="h-count-sep">:</span>
+      <div class="h-count-block">
+        <span class="h-count-num" id="hHours">12</span>
+        <span class="h-count-lbl">Hrs</span>
       </div>
-      <span class="count-separator">:</span>
-      <div class="count-unit">
-        <span class="count-number" id="minutes">00</span>
-        <span class="count-label">Minutos</span>
+      <span class="h-count-sep">:</span>
+      <div class="h-count-block">
+        <span class="h-count-num" id="hMins">12</span>
+        <span class="h-count-lbl">Min</span>
       </div>
-      <span class="count-separator">:</span>
-      <div class="count-unit">
-        <span class="count-number" id="seconds">00</span>
-        <span class="count-label">Segundos</span>
+      <span class="h-count-sep">:</span>
+      <div class="h-count-block">
+        <span class="h-count-num" id="hSecs">00</span>
+        <span class="h-count-lbl">Seg</span>
       </div>
     </div>
 
-    <!-- Secret Message debajo del contador -->
-    <div class="secret-message" id="secretMessage">
-      ✦ SOLO AQUELLOS QUE ESPEREN VERÁN EL ECLIPSE ✦
+    <!-- ════════════════════════════════════════
+         REPLACEMENT CTA — Elrow-style info card
+           12 DE AGOSTO · IBIZA + lineup link
+    ════════════════════════════════════════ -->
+    <div class="h-cta-row h-cta-date-row">
+
+      <!-- Date card -->
+      <div class="h-date-card" role="group" aria-label="Fecha del festival">
+        <span class="hdc-month">AGOSTO</span>
+        <span class="hdc-day">12</span>
+        <div class="hdc-divider" aria-hidden="true"><span>✦</span></div>
+        <span class="hdc-location">IBICENCA EN SANTAMAR</span>
+      </div>
+
+      <!-- Lineup link — biggest, most prominent element on hero -->
+      <a href="#lineup-prev" class="h-lineup-link">
+        <span class="hll-arrow" aria-hidden="true">→</span>
+        <span class="hll-text">VER LINE UP COMPLETO</span>
+        <span class="hll-sub">3 DJ's · Paul Darey · Okka · Dutari</span>
+      </a>
     </div>
-    
-    <!-- CTA Button -->
-    <button class="cta-btn" id="ctaButton">
-      <span class="cta-text">Revelar Fecha</span>
-      <span class="cta-reveal">12 AGOSTO 2026</span>
-    </button>
+
+  </div><!-- /h-hero-content -->
+
+  <!-- Scroll indicator -->
+  <div class="h-scroll-hint" aria-hidden="true">
+    <span>DESCUBRE</span>
+    <svg width="14" height="24" viewBox="0 0 14 24" fill="none">
+      <path d="M7 0L13.9282 17.5H0.0717969L7 0Z" fill="#ff6600"/>
+    </svg>
   </div>
-  
-  <!-- Scripts -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/TextPlugin.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
-  <script src="coming-soon.js"></script>
+
+</section><!-- /h-hero -->
+
+
+<!-- ════════════════════════════════════════════════════════════
+     INTRO — EL EVENTO
+════════════════════════════════════════════════════════════ -->
+<section id="intro" class="h-section h-intro">
+  <div class="h-container">
+    <div class="h-badge">
+      <span class="h-badge-icon">✦</span>
+      <span>SANTAMARFEST 2027</span>
+      <span class="h-badge-icon">✦</span>
+    </div>
+
+    <h2 class="h-section-title">
+      El evento que transforma<br>un pueblo en escenario
+    </h2>
+
+    <p class="h-section-text">
+      Nacido en las calles de Santa María del Río, Santamar es la celebración que fusiona
+      música electrónica internacional con la tradición más viva del campo leonés.
+      Nueve días y noches donde la electricidad de los mejores DJs se encuentra
+      con el calor de la hoguera, el olor a pan recién horneado y el ánimo de un pueblo
+      que se entrega sin medida.
+    </p>
+
+    <div class="h-stats">
+      <div class="h-stat">
+        <span class="h-stat-num">9</span>
+        <span class="h-stat-lbl">Días de fiesta</span>
+      </div>
+      <div class="h-stat-div" aria-hidden="true"></div>
+      <div class="h-stat">
+        <span class="h-stat-num">30+</span>
+        <span class="h-stat-lbl">Artistas</span>
+      </div>
+      <div class="h-stat-div" aria-hidden="true"></div>
+      <div class="h-stat">
+        <span class="h-stat-num">∞</span>
+        <span class="h-stat-lbl">Vibes</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     LINE UP PREVIEW
+════════════════════════════════════════════════════════════ -->
+<section id="lineup-prev" class="h-section h-lineup-sec">
+  <div class="h-container">
+    <p class="h-eyebrow-center">LOS MEJORES DJs INTERNACIONALES</p>
+    <h2 class="h-section-title h-title-grad">Line Up</h2>
+    <p class="h-section-subtitle">Tres leyendas. Una noche que no olvidarás.</p>
+
+    <div class="h-lineup-grid">
+
+      <!-- DJ 1 — PAUL DAREY -->
+      <div class="h-dj-card">
+        <div class="h-dj-img-wrap">
+          <div class="h-dj-img" style="background-image:url('recursos/Paul_Darey.jpeg')"></div>
+          <div class="h-dj-num">#1</div>
+        </div>
+        <div class="h-dj-info">
+          <span class="h-dj-genre">TECH-HOUSE</span>
+          <h3 class="h-dj-name">PAUL DAREY</h3>
+          <p class="h-dj-loc">IBIZA · INTERNACIONAL</p>
+          <a href="https://www.instagram.com/pauldarey/" class="h-dj-cta" target="_blank" rel="noopener">Ver Instagram →</a>
+        </div>
+      </div>
+
+      <!-- DJ 2 — OKKA -->
+      <div class="h-dj-card h-dj-card--alt">
+        <div class="h-dj-img-wrap">
+          <div class="h-dj-img" style="background-image:url('recursos/Okka_dj.jpg')"></div>
+          <div class="h-dj-num h-dj-num--cyan">#2</div>
+        </div>
+        <div class="h-dj-info">
+          <span class="h-dj-genre h-dj-genre--cyan">MELODIC TECH</span>
+          <h3 class="h-dj-name">OKKA</h3>
+          <p class="h-dj-loc">OVIEDO · SPAIN</p>
+          <a href="https://www.instagram.com/okkadj/" class="h-dj-cta h-dj-cta--cyan" target="_blank" rel="noopener">Ver Instagram →</a>
+        </div>
+      </div>
+
+      <!-- DJ 3 — DUTARI -->
+      <div class="h-dj-card">
+        <div class="h-dj-img-wrap">
+          <div class="h-dj-img" style="background-image:url('recursos/Dutari.jpeg')"></div>
+          <div class="h-dj-num h-dj-num--lime">#3</div>
+        </div>
+        <div class="h-dj-info">
+          <span class="h-dj-genre h-dj-genre--lime">DEEP HOUSE</span>
+          <h3 class="h-dj-name">DUTARI</h3>
+          <p class="h-dj-loc">IBIZA · PROGRESSIVE</p>
+          <a href="https://www.instagram.com/agustin_dutari/" class="h-dj-cta h-dj-cta--lime" target="_blank" rel="noopener">Ver Instagram →</a>
+        </div>
+      </div>
+
+    </div><!-- /h-lineup-grid -->
+
+    <p class="h-bottom-link">
+      <a href="lineup.html">Ver line up completo →</a>
+    </p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     PROGRAMA — 9 activities
+════════════════════════════════════════════════════════════ -->
+<section id="programa-prev" class="h-section h-programa-sec">
+  <div class="h-container">
+    <p class="h-eyebrow-center" style="color:#c7ff00;">LO QUE PASA EN VIRGEN DEL RÍO NO SE OLVIDA</p>
+    <h2 class="h-section-title">El Programa</h2>
+
+    <div class="h-prog-grid">
+      <div class="h-prog-item"><span class="h-prog-icon">🎧</span><h4>DJ Sets</h4><p>Electrónica sin parar, 9 días</p></div>
+      <div class="h-prog-item"><span class="h-prog-icon">🎺</span><h4>Orquesta en Vivo</h4><p>Clásicos y éxitos actuales</p></div>
+      <div class="h-prog-item"><span class="h-prog-icon">🎪</span><h4>Charanga Popular</h4><p>Alegría y tradición en las calles</p></div>
+      <div class="h-prog-item"><span class="h-prog-icon">👶</span><h4>Actividades Infantiles</h4><p>Juegos para los más pequeños</p></div>
+      <div class="h-prog-item"><span class="h-prog-icon">🎭</span><h4>Desfile de Gigantes</h4><p>Tradición y color en movimiento</p></div>
+      <div class="h-prog-item"><span class="h-prog-icon">🏵️</span><h4>Ofrenda Floral</h4><p>Homenaje a nuestra patrona</p></div>
+      <div class="h-prog-item"><span class="h-prog-icon">🎆</span><h4>Fuegos Artificiales</h4><p>Espectáculo de luz y color</p></div>
+      <div class="h-prog-item"><span class="h-prog-icon">🫧</span><h4>Fiesta de la Espuma</h4><p>¡A refrescarse y bailar!</p></div>
+      <div class="h-prog-item"><span class="h-prog-icon">🌅</span><h4>Tardeo Santamar</h4><p>El mejor ambiente al atardecer</p></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     HAZTE SOCIO / ENTRADAS
+════════════════════════════════════════════════════════════ -->
+<section id="socios" class="h-section h-socios-sec">
+  <div class="h-socios-bg" aria-hidden="true"></div>
+  <div class="h-grain-overlay" aria-hidden="true"></div>
+
+  <div class="h-container h-socios-inner">
+    <p class="h-eyebrow-center" style="color:#ff6600;">ACCESO VIP · EXPERIENCIA EXCLUSIVA</p>
+    <h2 class="h-section-title">Hazte Socio</h2>
+    <p class="h-section-subtitle">Consigue tu pulsera y vive Santamar como nunca</p>
+
+    <ul class="h-benefits">
+      <li><span class="h-ben-icon">✦</span> Acceso prioritario a conciertos</li>
+      <li><span class="h-ben-icon">✦</span> Descuentos exclusivos en barra</li>
+      <li><span class="h-ben-icon">✦</span> Sorteos de experiencias VIP</li>
+      <li><span class="h-ben-icon">✦</span> Zona reservada</li>
+      <li><span class="h-ben-icon">✦</span> Merch oficial incluido</li>
+    </ul>
+
+    <button class="h-cta-btn h-cta-btn--giant" aria-label="Consigue tu pulsera">
+      <span class="h-cta-main">QUIERO MI PULSERA</span>
+      <span class="h-cta-hover">SÓLO HASTA AGOTAR EXISTENCIAS →</span>
+    </button>
+
+    <p class="h-sold-out-tag">⚠ &nbsp; Quedan pocas pulseras — no te quedes sin la tuya</p>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     PATROCINADORES — infinite marquee
+════════════════════════════════════════════════════════════ -->
+<section id="patrocinadores" class="h-section h-sponsors-sec">
+  <div class="h-container">
+    <p class="h-eyebrow-center">NUESTROS ALIADOS</p>
+    <h2 class="h-section-title h-title-sm">Patrocinadores</h2>
+
+    <div class="h-sponsor-track">
+      <div class="h-sponsor-inner">
+        <!-- First set -->
+        <span class="h-sponsor-item">Diputación de léon</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">instituto leonés de cultura</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">ayuntamiento de villaselán</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">albalá gestión corredoría de seguros</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">garaje redondo</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">agromar</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">bar lucas</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">siapro</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">pescadería gonzalo</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">talleres maraña</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">ppanadería gorrona</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">gruttrans servicios integrales</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">boboli</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">pirofiesta</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">valdellan</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">Class Hais Estilistas</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">Puzzle</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">El invernadero</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">Zapico &amp; Alvarez</span><span class="h-sponsor-sep">◆</span>
+        <!-- Duplicate (seamless loop) -->
+        <span class="h-sponsor-item">Diputación de léon</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">instituto leonés de cultura</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">ayuntamiento de villaselán</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">albalá gestión corredoría de seguros</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">garaje redondo</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">agromar</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">bar lucas</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">siapro</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">pescadería gonzalo</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">talleres maraña</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">ppanadería gorrona</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">gruttrans servicios integrales</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">boboli</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">pirofiesta</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">valdellan</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">Class Hais Estilistas</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">Puzzle</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">El invernadero</span><span class="h-sponsor-sep">◆</span>
+        <span class="h-sponsor-item">Zapico &amp; Alvarez</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     CONTACTO / UBICACIÓN
+════════════════════════════════════════════════════════════ -->
+<section id="contacto" class="h-section h-contacto-sec">
+  <div class="h-container">
+    <p class="h-eyebrow-center">TE ESPERAMOS</p>
+    <h2 class="h-section-title">Contacto</h2>
+
+    <div class="h-contact-grid">
+      <!-- Mapa -->
+      <div class="h-contact-map">
+        <iframe
+          src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.2100000000003!2d-0.376288!3d38.070000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1ses!2ses!4v1678901234567!5m2!1ses!2ses"
+          width="100%" height="100%" style="border:0;" allowfullscreen="" loading="lazy"
+          referrerpolicy="no-referrer-when-downgrade"
+          title="Mapa — Santa María del Río, León">
+        </iframe>
+        <div class="h-contact-map-overlay" aria-hidden="true"></div>
+      </div>
+
+      <!-- Formulario -->
+      <div class="h-contact-form">
+        <form class="h-form" onsubmit="return false;" novalidate>
+          <div class="h-form-row">
+            <input type="text"    placeholder="Tu nombre"   class="h-input" autocomplete="name"  />
+            <input type="email"   placeholder="Tu email"    class="h-input" autocomplete="email" />
+          </div>
+          <textarea placeholder="Tu mensaje…" class="h-input h-textarea" rows="4"></textarea>
+          <button type="submit"  class="h-cta-btn h-cta-btn--form">ENVIAR MENSAJE</button>
+        </form>
+
+        <!-- Social -->
+        <div class="h-socials">
+          <a href="#" class="h-social" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+          </a>
+          <a href="#" class="h-social" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/>
+            </svg>
+          </a>
+          <a href="#" class="h-social" aria-label="TikTok">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.49 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+            </svg>
+          </a>
+          <a href="#" class="h-social" aria-label="Twitter / X">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div><!-- /h-contact-grid -->
+  </div>
+</section>
+
+
+<!-- ════════════════════════════════════════════════════════════
+     FOOTER
+════════════════════════════════════════════════════════════ -->
+<footer class="h-footer">
+  <div class="h-footer-inner">
+    <div class="h-footer-brand">
+      <span class="h-footer-logo">SANTAMARFEST</span>
+      <p class="h-footer-tag">9 días de música, tradición y locura</p>
+    </div>
+
+    <nav class="h-footer-links" aria-label="Footer">
+      <a href="#lineup-prev">Line Up</a>
+      <a href="#programa-prev">Programa</a>
+      <a href="#socios">Hazte Socio</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
+
+    <p class="h-footer-copy">© 2027 SANTAMARFEST · Santa María del Río, León · Todos los derechos reservados.</p>
+  </div>
+</footer>
+
+
+<!-- Cursor glow -->
+<div class="cursor-glow" aria-hidden="true"></div>
+
+<!-- Ambiental audio -->
+<button class="sound-toggle" id="soundToggle" title="Activar sonido ambiental" aria-label="Sonido ambiental">
+  <svg class="sound-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path fill="currentColor"
+      d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.3-2.5-4.04v8.08c1.48-.74 2.5-2.27 2.5-4.04zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+  </svg>
+  <svg class="sound-muted hidden" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+    <path fill="currentColor"
+      d="M16.6915026,12.4744748 L21.3818531,7.72348211 C21.6214944,7.48131045 21.6214944,7.0939341 21.3818531,6.85176234 L20.8847722,6.35460562 C20.6451245,6.11243469 20.2592448,6.11243469 20.0195975,6.35460562 L15.3292469,11.1055983 L10.6388964,6.35460562 C10.3992551,6.11243469 10.0133754,6.11243469 9.77372806,6.35460562 L9.27664715,6.85176234 C9.03700638,7.0939341 9.03700638,7.48131045 9.27664715,7.72348211 L13.9670477,12.4744748 L9.27664715,17.2254675 C9.03700638,17.4676391 9.03700638,17.8550155 9.27664715,18.0971872 L9.77372806,18.5943439 C10.0133754,18.8365156 10.3992551,18.8365156 10.6388964,18.5943439 L15.3292469,13.8433511 L20.0195975,18.5943439 C20.2592448,18.8365156 20.6451245,18.8365156 20.8847722,18.5943439 L21.3818531,18.0971872 C21.6214944,17.8550155 21.6214944,17.4676391 21.3818531,17.2254675 L16.6915026,12.4744748 Z M3,6 L0,6 C-0.552284749,6 -1,6.44771525 -1,7 L-1,17 C-1,17.5522847 -0.552284749,18 0,18 L3,18 L8,23 L8,1 L3,6 Z"/>
+  </svg>
+</button>
+<audio id="bgAudio" src="recursos/intro_santamar_ibiza_2026.mpeg" autoplay muted loop playsinline preload="auto"></audio>
+
+<!-- Scripts -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+<script src="coming-soon.js"></script>
+<script src="home.js"></script>
 </body>
 </html>

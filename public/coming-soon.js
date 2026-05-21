@@ -5,7 +5,7 @@
    ============================================ */
 
 // Registrar plugins de GSAP
-gsap.registerPlugin(ScrollTrigger, TextPlugin);
+gsap.registerPlugin(ScrollTrigger, TextPlugin, ScrollToPlugin);
 
 /* ============================================
    1. CONFIGURACIÓN INICIAL
@@ -30,11 +30,10 @@ const dom = {
   soundToggle: document.getElementById('soundToggle'),
   soundIcon: document.querySelector('.sound-icon'),
   soundMuted: document.querySelector('.sound-muted'),
-  bgAudio: document.getElementById('bgAudio'),
-  secretMessage: document.getElementById('secretMessage'),
-  screenOverlay: document.getElementById('screenOverlay')
+  bgAudio: document.getElementById('bgAudio'), // Audio de fondo
+  screenOverlay: document.getElementById('screenOverlay'), // Overlay para efectos visuales
+  navLinks: document.querySelectorAll('.nav-link'), // Enlaces de navegación
 };
-
 /* ============================================
    2. AUDIO AMBIENTAL (OPCIONAL)
    ============================================ */
@@ -263,7 +262,7 @@ function createParticles() {
 /* ============================================
    7. CUENTA ATRÁS
    ============================================ */
-const targetDate = new Date('July 1, 2026 00:00:00 GMT+0200').getTime();
+const targetDate = new Date('August 12, 2026 00:00:00 GMT+0200').getTime();
 
 function updateCountdown() {
   const now = Date.now();
@@ -301,7 +300,48 @@ setInterval(updateCountdown, 1000);
 updateCountdown();
 
 /* ============================================
-   8. BOTÓN CTA CON GLITCH
+   8. ANIMACIONES DE CARGA (GSAP)
+   ============================================ */
+function initEntranceAnimations() {
+  const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
+  
+  tl.to('.top-label', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8
+  }, 'start')
+  .to('.hero-title', {
+    opacity: 1,
+    y: 0,
+    duration: 1.2,
+    ease: 'expo.out'
+  }, '-=0.4')
+  .to('.hero-subtitle', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8
+  }, '-=0.6')
+  .to('.hero-cta-wrapper', {
+    opacity: 1,
+    y: 0,
+    duration: 1,
+    ease: 'expo.out'
+  }, '-=0.4')
+  .to('.hero-tagline', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8,
+    ease: 'back.out(1.2)'
+  }, '-=0.3')
+  .to('.main-header', {
+    opacity: 1,
+    y: 0,
+    duration: 0.8
+  }, '-=0.6');
+}
+
+/* ============================================
+   9. BOTÓN CTA CON GLITCH
    ============================================ */
 let isGlitchActive = false;
 
@@ -351,32 +391,6 @@ dom.ctaBtn.addEventListener('click', () => {
 });
 
 /* ============================================
-   9. MENSAJE SECRETO
-   ============================================ */
-function scheduleSecret() {
-  const delay = Math.random() * 15000 + 10000;
-  
-  setTimeout(() => {
-    if (Math.random() > 0.4) {
-      dom.secretMessage.style.animation = 'none';
-      dom.secretMessage.offsetHeight;
-      dom.secretMessage.style.animation = null;
-      
-      setTimeout(() => {
-        dom.secretMessage.style.animation = 'none';
-        dom.secretMessage.offsetHeight;
-        dom.secretMessage.style.animation = null;
-        scheduleSecret();
-      }, 2000);
-    } else {
-      scheduleSecret();
-    }
-  }, delay);
-}
-
-scheduleSecret();
-
-/* ============================================
    10. FLASHES CADA 8–12 SEGUNDOS
    ============================================ */
 function scheduleFlash() {
@@ -398,68 +412,144 @@ function scheduleFlash() {
 scheduleFlash();
 
 /* ============================================
-   11. ANIMACIONES DE CARGA (GSAP)
+   11. INICIALIZACIÓN
    ============================================ */
-function initEntranceAnimations() {
-  const tl = gsap.timeline({ defaults: { ease: 'power3.out', duration: 1 } });
-  
-  tl.to('.top-label', {
-    opacity: 1,
-    y: 0,
-    duration: 0.8
-  })
-  .to('.main-title', {
-    opacity: 1,
-    y: 0,
-    duration: 1.2,
-    ease: 'expo.out'
-  }, '-=0.4')
-  .to('.subtitle', {
-    opacity: 1,
-    y: 0,
-    duration: 0.8
-  }, '-=0.6')
-  .to('.countdown', {
-    opacity: 1,
-    y: 0,
-    duration: 1,
-    ease: 'expo.out'
-  }, '-=0.4')
-  .to('.cta-btn', {
-    opacity: 1,
-    y: 0,
-    duration: 0.8,
-    ease: 'back.out(1.2)'
-  }, '-=0.3');
+
+/**
+ * Inicializa la aplicación cuando el DOM está completamente cargado.
+ * Configura el estado inicial, crea elementos dinámicos e inicia animaciones.
+ */
+function init() {
+  // Añadir clase para estados JS y eliminar la clase de carga
+  dom.body.classList.add('js-loaded');
+  dom.body.classList.remove('js-loading');
+
+  // Inicializar subsistemas visuales
+  createStars();
+  createParticles();
+  animateEclipse(); // Inicia la animación del eclipse de fondo
+
+  // Actualizar posición inicial del cursor-glow
+  gsap.set(dom.cursorGlow, { x: mouse.x, y: mouse.y });
+
+  // Iniciar animaciones de entrada para el contenido principal
+  initEntranceAnimations();
+
+  // Intentar iniciar audio ambiental
+  initAudio();
+
+  // Configurar el desplazamiento suave para los enlaces de navegación
+  dom.navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').substring(1);
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: { y: targetSection, offsetY: 0 },
+          ease: 'power2.inOut'
+        });
+      }
+    });
+  });
+
+  console.log('🌘 SANTAMAR VIBES - Sitio Inmersivo Inicializado');
 }
 
 /* ============================================
-   12. INICIALIZACIÓN
+   11. INICIALIZACIÓN FINAL
    ============================================ */
+
+/* ============================================
+   13. OPTIMIZACIONES DE RENDIMIENTO
+   ============================================ */
+if (navigator.hardwareConcurrency && navigator.hardwareConcurrency <= 4) {
+  gsap.globalTimeline.timeScale(1.2); // Acelerar animaciones en dispositivos de bajo rendimiento
+  
+  // Reducir el número de partículas para mejorar el rendimiento
+  dom.particlesContainer.innerHTML = '';
+  for (let i = 0; i < 20; i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    p.style.cssText = `
+      position: absolute;
+      width: ${Math.random() * 3 + 1}px;
+      height: ${Math.random() * 3 + 1}px;
+      left: ${Math.random() * 100}%;
+      bottom: -20px;
+      background: radial-gradient(circle, rgba(255, 170, 0, 0.9) 0%, transparent 70%);
+      border-radius: 50%;
+      animation: particleFloat ${Math.random() * 15 + 15}s linear infinite;
+      opacity: 0;
+    `;
+    dom.particlesContainer.appendChild(p);
+  }
+}
+
+/* ============================================
+   14. EVENTOS ESPECIALES (Easter Eggs, etc.)
+   ============================================ */
+
+// Ejemplo: Activar un efecto especial con la tecla 'S' (Santamar)
+document.addEventListener('keydown', (e) => {
+  if (e.key.toLowerCase() === 's') {
+    console.log('¡Santamar Mode Activado!');
+    // Aquí podrías añadir un efecto visual o de sonido especial
+  }
+});
+
+/* ============================================
+   12. EVENT LISTENERS EXTRAS
+   ============================================ */
+
+/**
+ * Inicializa la aplicación cuando el DOM está completamente cargado.
+ * Configura el estado inicial, crea elementos dinámicos e inicia animaciones.
+ */
+function init() {
+  // Añadir clase para estados JS y eliminar la clase de carga
+  dom.body.classList.add('js-loaded');
+  dom.body.classList.remove('js-loading');
+
+  // Inicializar subsistemas visuales
+  createStars();
+  createParticles();
+  animateEclipse(); // Inicia la animación del eclipse de fondo
+
+  // Actualizar posición inicial del cursor-glow
+  gsap.set(dom.cursorGlow, { x: mouse.x, y: mouse.y });
+
+  // Iniciar animaciones de entrada para el contenido principal
+  initEntranceAnimations();
+
+  // Intentar iniciar audio ambiental
+  initAudio();
+
+  // Configurar el desplazamiento suave para los enlaces de navegación
+  dom.navLinks.forEach(link => {
+    link.addEventListener('click', e => {
+      e.preventDefault();
+      const targetId = link.getAttribute('href').substring(1);
+      const targetSection = document.getElementById(targetId);
+      if (targetSection) {
+        gsap.to(window, {
+          duration: 1,
+          scrollTo: { y: targetSection, offsetY: 0 },
+          ease: 'power2.inOut'
+        });
+      }
+    });
+  });
+
+  console.log('🌘 SANTAMAR VIBES — Inmersivo Inicializado');
+}
+
+// Asegurarse de que el script se ejecuta después de que el DOM esté completamente cargado
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', init);
 } else {
   init();
-}
-
-function init() {
-  // Añadir clase para estados JS
-  dom.body.classList.add('js-loaded');
-  dom.body.classList.remove('js-loading');
-  
-  // Inicializar subsistemas
-  createStars();
-  createParticles();
-  animateEclipse();
-  initEntranceAnimations();
-  
-  // Intentar iniciar audio en cuanto se carga la web
-  initAudio();
-  
-  // Actualizar posición inicial del cursor-glow
-  gsap.set(dom.cursorGlow, { x: mouse.x, y: mouse.y });
-  
-  console.log('🌘 ECLIPSE IBIZA VIBES - Initialized');
 }
 
 /* ============================================
