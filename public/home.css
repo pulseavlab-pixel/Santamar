@@ -1229,9 +1229,14 @@
 }
 
 .h-prog-icon {
-  font-size: 2.6rem;
+  font-family: 'Bebas Neue', 'Orbitron', sans-serif;
+  font-size: 2.8rem;
+  font-weight: 700;
   display: block;
   margin-bottom: 0.8rem;
+  line-height: 1;
+  color: #ff6600;
+  text-shadow: 0 0 20px rgba(255, 102, 0, 0.55);
 }
 
 .h-prog-item h4 {
@@ -1346,38 +1351,142 @@
    PATROCINADORES  (infinite marquee)
    ════════════════════════════════════════════════════════ */
 .h-sponsors-sec {
-  padding: 5rem 1.5rem;
+  position: relative;
+  min-height: 60vh;
+  padding: 3.2rem 1.5rem 1rem;
   background:
     linear-gradient(180deg, #0d0a1f 0%, #0b0918 100%);
   border-top: 1px solid rgba(255, 255, 255, 0.04);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
   overflow: hidden;
 }
 
-.h-sponsor-track {
-  margin-top: 2rem;
+/* ── Laser-beam grid glow for sponsors ──
+   Thin amber/cyan rays sweep across the section simulating
+   stage lighting rigs — no JS, pure CSS  */
+.h-sponsor-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+/* diagonal sweep beam */
+.h-sponsor-glow::before {
+  content: '';
+  position: absolute;
+  top: -60%;
+  left: -20%;
+  width: 200%;
+  height: 3px;
+  transform: rotate(-12deg);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 102, 0, 0.0) 15%,
+    rgba(255, 102, 0, 0.50) 45%,
+    rgba(255, 170, 0, 0.70) 50%,
+    rgba(255, 102, 0, 0.50) 55%,
+    rgba(255, 102, 0, 0.0) 85%,
+    transparent 100%
+  );
+  animation: sponsorSweep 4.5s ease-in-out infinite;
+  filter: blur(2px);
+}
+
+/* secondary cyan lease */
+.h-sponsor-glow::after {
+  content: '';
+  position: absolute;
+  top: 30%;
+  left: -10%;
+  width: 180%;
+  height: 2px;
+  transform: rotate(8deg);
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(0, 217, 255, 0.0) 20%,
+    rgba(0, 217, 255, 0.30) 48%,
+    rgba(0, 247, 255, 0.55) 50%,
+    rgba(0, 217, 255, 0.30) 52%,
+    rgba(0, 217, 255, 0.0) 80%,
+    transparent 100%
+  );
+  animation: sponsorSweep 6.5s ease-in-out infinite;
+  animation-delay: 1.8s;
+  filter: blur(1.5px);
+}
+
+@keyframes sponsorSweep {
+  0%   { transform: rotate(-12deg) translateX(-80%); opacity: 0; }
+  15%  { opacity: 1; }
+  65%  { opacity: 1; }
+  100% { transform: rotate(-12deg) translateX(80%); opacity: 0; }
+}
+
+/* tier glow blotches — warm amber + cool cyan pooled at each track base */
+.h-sponsor-glow .h-glow-blob {
+  position: absolute;
+  left: 50%;
+  width: 100%;
+  height: 60px;
+  transform: translateX(-50%);
+  pointer-events: none;
+  opacity: 0;
+  animation: blobPulse 5s ease-in-out infinite;
+}
+
+.h-sponsor-glow .h-glow-blob--amber {
+  top: 20%;
+  background: radial-gradient(ellipse, rgba(255, 140, 0, 0.25) 0%, transparent 70%);
+  animation-delay: 0s;
+}
+
+.h-sponsor-glow .h-glow-blob--cyan {
+  top: 55%;
+  background: radial-gradient(ellipse, rgba(0, 200, 255, 0.18) 0%, transparent 70%);
+  animation-delay: 2.2s;
+}
+
+@keyframes blobPulse {
+  0%, 100% { opacity: 0.2; transform: translateX(-50%) scale(1); }
+  50%      { opacity: 0.55; transform: translateX(-50%) scale(1.08); }
+}
+
+.h-sponsor-tracks {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: absolute;
+  top: 55%;
+  left: 0;
+  right: 0;
+  z-index: 2; /* above glow */
+}
+
+.h-sponsor-track-row {
   overflow: hidden;
   position: relative;
 }
 
-/* Soft edge fade */
-.h-sponsor-track::before,
-.h-sponsor-track::after {
+.h-sponsor-track-row::before,
+.h-sponsor-track-row::after {
   content: '';
   position: absolute;
   top: 0;
   bottom: 0;
-  width: 100px;
+  width: 80px;
   z-index: 2;
   pointer-events: none;
 }
 
-.h-sponsor-track::before {
+.h-sponsor-track-row::before {
   left: 0;
   background: linear-gradient(90deg, #0b0918, transparent);
 }
 
-.h-sponsor-track::after {
+.h-sponsor-track-row::after {
   right: 0;
   background: linear-gradient(270deg, #0b0918, transparent);
 }
@@ -1387,7 +1496,7 @@
   align-items: center;
   gap: 0;
   white-space: nowrap;
-  animation: marqueeScroll 28s linear infinite;
+  animation: marqueeScroll 12s linear infinite;
 }
 
 .h-sponsor-inner:hover {
@@ -1396,24 +1505,83 @@
 
 .h-sponsor-item {
   font-family: 'Bebas Neue', 'Orbitron', sans-serif;
-  font-size: clamp(1rem, 2.5vw, 1.75rem);
+  font-size: clamp(0.85rem, 2.2vw, 1.5rem);
   font-weight: 700;
   letter-spacing: 3px;
-  color: rgba(240, 230, 211, 0.22);
-  padding: 0 1.8rem;
-  transition: color 0.3s ease;
+  color: rgba(240, 230, 211, 0.6);
+  padding: 0.3rem 1.4rem;
+  transition: color 0.3s ease, text-shadow 0.3s ease, transform 0.3s ease;
   cursor: default;
   user-select: none;
 }
 
 .h-sponsor-item:hover {
-  color: rgba(240, 230, 211, 0.75);
+  color: #ffaa00;
+  text-shadow: 0 0 20px rgba(255, 170, 0, 0.55);
+  transform: scale(1.06);
+}
+
+/* Secondary tier is smaller + lower contrast */
+.h-sponsor-inner--secondary .h-sponsor-item {
+  font-size: clamp(0.78rem, 1.8vw, 1.2rem);
+  letter-spacing: 2.5px;
+  color: rgba(240, 230, 211, 0.3);
+  padding: 0.4rem 1.5rem;
+}
+
+.h-sponsor-inner--secondary .h-sponsor-item:hover {
+  color: rgba(240, 230, 211, 0.7);
+  text-shadow: 0 0 12px rgba(255, 170, 0, 0.3);
 }
 
 .h-sponsor-sep {
-  color: rgba(255, 102, 0, 0.3);
-  padding: 0 0.5rem;
-  font-size: 0.6rem;
+  color: rgba(255, 102, 0, 0.45);
+  padding: 0 0.6rem;
+  font-size: 0.55rem;
+  flex-shrink: 0;
+}
+
+/* Sponsor CTA row */
+.h-sponsor-cta-row {
+  display: flex;
+  justify-content: center;
+  margin-top: 0;
+  padding-bottom: 1.2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.h-sponsor-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 1.8px;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: #0b0918;
+  background: linear-gradient(135deg, #ffaa00, #ff6600);
+  padding: 0.7rem 1.8rem;
+  border-radius: 60px;
+  box-shadow:
+    0 4px 30px rgba(255, 102, 0, 0.45),
+    inset 0 1px 0 rgba(255, 255, 255, 0.25);
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
+}
+
+.h-sponsor-btn:hover {
+  transform: translateY(-3px) scale(1.04);
+  box-shadow:
+    0 8px 40px rgba(255, 102, 0, 0.6),
+    inset 0 1px 0 rgba(255, 255, 255, 0.3);
+  color: #0b0918;
+}
+
+.h-sponsor-btn-icon {
+  font-size: 1.2rem;
+  line-height: 1;
 }
 
 @keyframes marqueeScroll {
@@ -1428,13 +1596,14 @@
   background:
     radial-gradient(ellipse at 20% 0%, rgba(180, 80, 10, 0.1) 0%, transparent 50%),
     linear-gradient(180deg, #0d0a1f 0%, #090812 100%);
+  padding-top: 2.5rem;
 }
 
 .h-contact-grid {
   display: grid;
   grid-template-columns: 1.2fr 1fr;
   gap: 2.5rem;
-  margin-top: 3rem;
+  margin-top: 2rem;
 }
 
 /* Map */
@@ -1748,6 +1917,8 @@
   /* Contact: map + form → single column */
   .h-contact-grid {
     grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
   }
 
   /* Título de sección un poco más pequeño en tablets */
@@ -2019,6 +2190,9 @@
     padding: 4.5rem 1.2rem;
   }
 
+  /* Aggressive gap compress: sponsor→contacto → minimal breathing room */
+  .h-sponsors-sec + .h-contacto-sec { padding-top: 0; }
+
   /* ── Intro ── */
   .h-stats {
     flex-direction: column;
@@ -2068,7 +2242,8 @@
   }
 
   .h-prog-icon {
-    font-size: 2.2rem;
+    font-size: 3rem;
+    margin-bottom: 0.5rem;
   }
 
   .h-prog-item h4 {
@@ -2181,6 +2356,10 @@
     padding: 3.5rem 1rem;
   }
 
+  /* Close sponsor→contacto gap even on small phones */
+  .h-sponsors-sec { padding: 1.5rem 0.8rem 0.4rem !important; }
+  .h-sponsors-sec + .h-contacto-sec { padding-top: 0; }
+
   .h-section-title {
     font-size: clamp(2.2rem, 8vw, 3.8rem);
   }
@@ -2273,7 +2452,7 @@
   }
 
   .h-prog-icon {
-    font-size: 1.8rem;
+    font-size: 2.4rem;
     margin-bottom: 0.5rem;
   }
 
@@ -2307,19 +2486,64 @@
   }
 
   /* ── Sponsors ── */
-  .h-sponsor-sec {
-    padding: 4rem 1rem;
+  .h-sponsors-sec {
+    padding: 2.2rem 0.8rem 1.2rem;
   }
 
-  .h-sponsor-track::before,
-  .h-sponsor-track::after {
-    width: 60px;
+  .h-sponsor-track-row::before,
+  .h-sponsor-track-row::after {
+    width: 35px;
   }
 
   .h-sponsor-item {
-    font-size: 0.9rem;
+    font-size: 0.82rem;
     letter-spacing: 2px;
-    padding: 0 1.2rem;
+    padding: 0.25rem 1.2rem;
+  }
+
+  .h-sponsor-inner--secondary .h-sponsor-item {
+    font-size: 0.68rem;
+    letter-spacing: 1.8px;
+    padding: 0.2rem 0.9rem;
+  }
+
+  .h-sponsor-btn {
+    font-size: 0.75rem;
+    padding: 0.6rem 1.5rem;
+    letter-spacing: 1.2px;
+    gap: 0.5rem;
+  }
+
+  .h-sponsor-btn-icon {
+    font-size: 0.95rem;
+  }
+
+  .h-sponsor-track-row::before,
+  .h-sponsor-track-row::after {
+    width: 30px;
+  }
+
+  .h-sponsor-item {
+    font-size: 0.78rem;
+    letter-spacing: 2px;
+    padding: 0.25rem 1rem;
+  }
+
+  .h-sponsor-inner--secondary .h-sponsor-item {
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    padding: 0.15rem 0.8rem;
+  }
+
+  .h-sponsor-btn {
+    font-size: 0.72rem;
+    padding: 0.6rem 1.4rem;
+    letter-spacing: 1.2px;
+    gap: 0.5rem;
+  }
+
+  .h-sponsor-btn-icon {
+    font-size: 0.9rem;
   }
 
   /* ── Contact ── */
@@ -2595,19 +2819,36 @@
   }
 
   /* ── Sponsors ── */
-  .h-sponsor-sec {
-    padding: 3rem 0.8rem;
+  .h-sponsors-sec {
+    padding: 1.8rem 0.6rem 1rem;
   }
 
-  .h-sponsor-track::before,
-  .h-sponsor-track::after {
-    width: 40px;
+  .h-sponsor-track-row::before,
+  .h-sponsor-track-row::after {
+    width: 25px;
   }
 
   .h-sponsor-item {
-    font-size: 0.82rem;
-    letter-spacing: 2px;
-    padding: 0 0.9rem;
+    font-size: 0.7rem;
+    letter-spacing: 1.5px;
+    padding: 0 0.6rem;
+  }
+
+  .h-sponsor-inner--secondary .h-sponsor-item {
+    font-size: 0.58rem;
+    letter-spacing: 1px;
+    padding: 0 0.5rem;
+  }
+
+  .h-sponsor-btn {
+    font-size: 0.62rem;
+    padding: 0.55rem 1.1rem;
+    letter-spacing: 0.8px;
+    gap: 0.4rem;
+  }
+
+  .h-sponsor-btn-icon {
+    font-size: 0.85rem;
   }
 
   /* ── Contacto ── */
@@ -2667,6 +2908,12 @@
   }
 }
 
+/* ── Close sponsor→contacto gap on very small screens ──
+   Overrides the generic .h-section top padding in the 480px & 600px tiers */
+@media (max-width: 600px) {
+  .h-sponsors-sec { padding: 1.5rem 0.6rem 0.4rem !important; }
+  .h-sponsors-sec + .h-contacto-sec { padding-top: 0; }
+}
 
 /* ════════════════════════════════════════════════════════
    LANDSCAPE MOBILE  (short height, side-by-side screens)
